@@ -1,0 +1,37 @@
+%YAML 1.2
+# yaml-language-server $schema=https://json.schemastore.org/pre-commit-config.json
+---
+
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+        args:
+          - --fix=no
+      - id: no-commit-to-branch
+        args:
+          - --branch=develop
+      - id: trailing-whitespace
+        args:
+          - --markdown-linebreak-ext=md
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.16.0
+    hooks:
+      - id: commitlint
+        language_version: 22.7.0
+        args:
+          - --extends="@commitlint/config-conventional"
+        additional_dependencies:
+          - "@commitlint/config-conventional"
+        stages: [commit-msg]
