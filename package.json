@@ -9,20 +9,25 @@
   "scripts": {
     "dev": "nodemon ./start.js",
     "start": "node ./start.js",
-    "test": "mocha ./test/**/*.test.js",
+    "test": "mocha ./tests/**/*.test.js --require ./tests/test-setup.js --exit",
     "compliance:lint": "eslint .",
     "compliance:lint-fix": "eslint . --fix"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.9",
     "chai": "^5.1.1",
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "mocha": "^10.7.3",
     "nodemon": "^3.1.7",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
-    "express": "^4.21.1"
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.15.0"
   }
 }
