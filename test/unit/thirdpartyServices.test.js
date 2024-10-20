@@ -3,7 +3,7 @@ import { getFileContentsHelper, trimHelper } from "../helpers/index.js";
 
 const { expect } = chai;
 
-describe("Third Party services", () => {
+describe("Third Party Services", () => {
   let filePath;
   let fileContents;
   let expectedContents;

@@ -1,5 +1,17 @@
 # nodejs-cinema-tickets-code-test
 
+# Contents
+
+- [Instructions](#instructions)
+  - [Objective](#objective)
+  - [Business Rules](#business-rules)
+    - [Constraints](#constraints)
+  - [Assumptions](#assumptions)
+  - [Your Task](#your-task)
+- [Try it yourself](#try-it-yourself)
+  - [Some examples for testing different scenarios](#some-examples-for-testing-different-scenarios)
+- [Development Guidelines](#development-guidelines)
+
 ## Instructions
 ### Objective
 
@@ -71,8 +83,76 @@ Provide a working implementation of a `TicketService` that:
 
 - Rejects any invalid ticket purchase requests. It is up to you to identify what should be deemed as an invalid purchase request.”
 
+## Try it yourself
 
-## Usage
+The application is importable so you can test it using node REPL.
+
+```js
+const { application } = await import("./application.js");
+```
+
+### Some examples for testing different scenarios
+
+```js
+// Account 1, 5 adults, 4 children, 5 infants
+application({
+  accountId: 1,
+  ticketTypeRequestArray: [
+    {
+      type: "ADULT",
+      noOfTickets: 5,
+    },
+    {
+      type: "CHILD",
+      noOfTickets: 4,
+    },
+    {
+      type: "INFANT",
+      noOfTickets: 5,
+    },
+  ],
+});
+
+// Account 2, 1 adult, 0 children, 5 infants
+application({
+  accountId: 2,
+  ticketTypeRequestArray: [
+    {
+      type: "ADULT",
+      noOfTickets: 1,
+    },
+    {
+      type: "CHILD",
+      noOfTickets: 0,
+    },
+    {
+      type: "INFANT",
+      noOfTickets: 5,
+    },
+  ],
+});
+
+// Account 3, 0 adults, 4 children, 0 infants
+application({
+  accountId: 3,
+  ticketTypeRequestArray: [
+    {
+      type: "ADULT",
+      noOfTickets: 0,
+    },
+    {
+      type: "CHILD",
+      noOfTickets: 4,
+    },
+    {
+      type: "INFANT",
+      noOfTickets: 0,
+    },
+  ],
+});
+```
+
+## Development Guidelines
 
 This project uses [Pre-commit](https://pre-commit.com/).
 
