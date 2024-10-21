@@ -1,5 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
+import swaggerUI from "swagger-ui-express";
+import yaml from "yaml";
+import fs from "fs";
+import { router } from "./routes.js";
+import helmet from "helmet";
 
 export const makeApp = ({ logger }) => {
   const app = express();
@@ -9,9 +14,16 @@ export const makeApp = ({ logger }) => {
 
   app.use(bodyParser.json());
 
-  app.get("/", (req, res) => {
-    res.status(200).send({ message: "Application home" });
-  });
+  app.disable("x-powered-by");
+  app.use(helmet());
+
+  const openApiYaml = fs.readFileSync("./api/openapi.yaml", "utf8");
+
+  const convertedSwaggerDoc = yaml.parse(openApiYaml);
+
+  app.use("/swagger", swaggerUI.serve, swaggerUI.setup(convertedSwaggerDoc));
+
+  app.use("/", router());
 
   app.use((req, res) => {
     res.status(404).json({
