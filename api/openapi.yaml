@@ -1,0 +1,174 @@
+openapi: 3.0.3
+info:
+  title: Luke Choudhury - Node JS Cinema Tickets Tickets
+paths:
+  /tickets/request:
+    post:
+      description: POST a ticket purchase request
+      tags: ["Ticket Purchase"]
+      requestBody:
+        description: The request you wish to send
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountId:
+                  type: integer
+                  example: 123456
+                ticketTypes:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ticketRequestObject"
+      responses:
+        "200":
+          description: "Booking confirmed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ticketRequestSuccessResponse"
+              examples:
+                success_with_note:
+                  $ref: "#/components/examples/ticketRequestSuccessResponseWithNoteExample"
+                success_without_note:
+                  $ref: "#/components/examples/ticketRequestSuccessResponseWithoutNoteExample"
+        "400":
+          description: "Issue with booking"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ticketRequestErrorResponse"
+              examples:
+                error_invalid_format_accountId:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleInvalidFormatAccountId"
+                error_invalid_format_ticketTypes:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleInvalidFormatTicketTypes"
+                error_infant_exceeds_adult:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleInfantExceedsAdult"
+                error_requires_adult:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleRequiresAdult"
+                error_invalid_accountId:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleInvalidAccountId"
+                error_missing_ticket_type_in_ticket_requests:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleMissingTicketType"
+                error_unknown_ticket_type:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleUnknownTicketType"
+                error_exceeds_maximum:
+                  $ref: "#/components/examples/ticketRequestErrorResponseExampleExceedsMaximum"
+components:
+  schemas:
+    ticketRequestObject:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ADULT
+            - CHILD
+            - INFANT
+        noOfTickets:
+          type: integer
+          example: 5
+    ticketRequestSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        receipt:
+          type: object
+          properties:
+            tickets:
+              type: array
+              items:
+                type: object
+                properties:
+                  pricePerTicket:
+                    type: string
+                  quantity:
+                    type: integer
+                  ticket:
+                    type: string
+            totalPrice:
+              type: string
+            totalSeats:
+              type: integer
+            note:
+              type: string
+    ticketRequestErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        field:
+          type: string
+  examples:
+    ticketRequestSuccessResponseWithNoteExample:
+      summary: Successful response example with note
+      value:
+        status: "confirmed"
+        receipt:
+          tickets:
+            - pricePerTicket: 25
+              quantity: 5
+              ticket: "ADULT"
+            - pricePerTicket: 15
+              quantity: 4
+              ticket: "CHILD"
+            - pricePerTicket: 0
+              quantity: 3
+              ticket: "INFANT"
+          totalPrice: "£185"
+          totalSeats: 9
+          note: "Please note, all infants must be sat on an adults lap. No seats are allocated for them"
+    ticketRequestSuccessResponseWithoutNoteExample:
+      summary: Successful response example without note
+      value:
+        status: "confirmed"
+        receipt:
+          tickets:
+            - pricePerTicket: 25
+              quantity: 5
+              ticket: "ADULT"
+            - pricePerTicket: 15
+              quantity: 4
+              ticket: "CHILD"
+            - pricePerTicket: 0
+              quantity: 0
+              ticket: "INFANT"
+          totalPrice: "£185"
+          totalSeats: 9
+    ticketRequestErrorResponseExampleInvalidFormatAccountId:
+      summary: Invalid Format - Account ID
+      value:
+        code: "INVALID_FORMAT"
+        field: "accountId"
+    ticketRequestErrorResponseExampleInvalidFormatTicketTypes:
+      summary: Invalid Format - Ticket Types
+      value:
+        code: "INVALID_FORMAT"
+        field: "ticketTypes"
+    ticketRequestErrorResponseExampleInfantExceedsAdult:
+      summary: Number of infants exceed number of adults
+      value:
+        code: "NUMBER_OF_INFANT_TICKETS_EXCEEDS_NUMBER_OF_ADULT_TICKETS"
+    ticketRequestErrorResponseExampleRequiresAdult:
+      summary: Infant or child tickets require an adult
+      value:
+        code: "INFANT_OR_CHILD_TICKETS_REQUIRE_PURCHASE_OF_ADULT_TICKET"
+    ticketRequestErrorResponseExampleInvalidAccountId:
+      summary: Invalid Account ID
+      value:
+        code: "ACCOUNTID_MUST_BE_VALID"
+    ticketRequestErrorResponseExampleMissingTicketType:
+      summary: Missing ticket type
+      value:
+        code: "TICKET_TYPE_REQUEST_SHOULD_CONTAIN_INFORMATION_FOR:_INFANT_CHILD_ADULT"
+    ticketRequestErrorResponseExampleUnknownTicketType:
+      summary: Unknown Ticket Type
+      value:
+        code: 'UNKNOWN_TICKET_TYPE:_"WRONG"'
+    ticketRequestErrorResponseExampleExceedsMaximum:
+      summary: Number of tickets exceeds the maximum
+      value:
+        code: "NUMBER_OF_TICKETS_EXCEEDS_TICKET_MAXIMUM"

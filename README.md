@@ -9,7 +9,9 @@
   - [Assumptions](#assumptions)
   - [Your Task](#your-task)
 - [Try it yourself](#try-it-yourself)
+  - [Standard test](#standard-test)
   - [Some examples for testing different scenarios](#some-examples-for-testing-different-scenarios)
+  - [Express extension to test](#express-extension-to-test)
 - [Development Guidelines](#development-guidelines)
 
 ## Instructions
@@ -85,6 +87,8 @@ Provide a working implementation of a `TicketService` that:
 
 ## Try it yourself
 
+### Standard test
+
 The application is importable so you can test it using node REPL.
 
 ```js
@@ -151,6 +155,44 @@ application({
   ],
 });
 ```
+
+### Express extension to test
+
+You can bring up the application using
+
+```zsh
+npm run express.dev
+```
+
+or
+
+```zsh
+docker compose up --build
+```
+
+and then make a POST API call to it via Insomnia via this URL [http://localhost:8080/tickets/request](http://localhost:8080/tickets/request)
+
+```json
+{
+	"accountId": 123456,
+	"ticketTypes": [
+		{
+			"type": "ADULT",
+			"noOfTickets": 5
+		},
+		{
+			"type": "CHILD",
+			"noOfTickets": 4
+		},
+		{
+			"type": "INFANT",
+			"noOfTickets": 3
+		}
+	]
+}
+```
+
+You can also view the API spec through the application here [http://localhost:8080/swagger](http://localhost:8080/swagger)
 
 ## Development Guidelines
 

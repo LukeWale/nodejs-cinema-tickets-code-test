@@ -7,6 +7,7 @@ const config = {
     ADULT: 25,
   },
   currency: "£",
+  PORT: process.env.port || 8080,
 };
 
 export default config;
